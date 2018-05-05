@@ -50,6 +50,10 @@ if ($conn->connect_error) {
 			}
 			$_SESSION['projectmanagerid'] = $array[0];
 			projectmanager();
+		}else{
+			
+			echo "<br><p>You are not added to the database write now. Wait an admin to add to the database.</p>";
+			echo "<p>To go back press this button</p><form action='index.php'><input type='submit' value='Click'/></form>";
 		}
 	}
 	
