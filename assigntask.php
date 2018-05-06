@@ -44,10 +44,11 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 			die("Connection failed: " . $conn->connect_error);
 		}else{
 						
-			$projectsOwnedByProjectManager = $conn->query("SELECT * FROM project WHERE project_manager_id =".$_SESSION['projectmanagerid']);
+			$projectsOwnedByProjectManager = $conn->query("SELECT * FROM project WHERE project_manager_id ='".$_SESSION['projectmanagerid']."'");
 			if($projectsOwnedByProjectManager){
+				echo "<p>The projects you have:</p>";
+
 				if ($projectsOwnedByProjectManager->num_rows > 0) {
-					echo "<p>The projects you have:</p>";
 					echo "<table><tr><th>ID</th><th>Name</th><th>Start Date</th><th>Estimated Total Work Days</th><th>Area</th><th>Status</th><th>Project manager id</th></tr>";
 				
 				while($row = $projectsOwnedByProjectPanager->fetch_assoc()) {

@@ -1,33 +1,50 @@
-<html>
+<?php
+session_start();
 
-<head>
+$conn = new mysqli("localhost", $_SESSION['username'], $_SESSION['password'],"mydatabase");
 
-<title> Delete a project manager</title>
-</head>
+if(!(($_POST['id']=="")||($_POST['password']==""))){
+	if($_POST['password']==$_POST['passwordagain']){
+		$result = $conn->query("SELECT * FROM projectmanager WHERE id='".$_POST['id']."'");
+		if($result){
+			
+			$row = $result->fetch_assoc();
+			$conn->query("SELECT * FROM projectmanager WHERE id='".$_POST['id']."'");
+			
+			
+			if($conn->query("SET PASSWORD FOR ".$row['username']."@localhost = PASSWORD('".$_POST['password']."')")){
+				echo "Password has been changed for user ".$row['username'];
+				echo "<form action='./editprojectmanagers.php'>
+				<input type='submit' value='To go back press' />
+				</form>";
+				
+			}else{
+				echo "Sorry, some error happened while changing your pass".$conn->error;
+				echo "<form action='./editprojectmanagers.php' method='get'>
+				<input type='submit' value='To go back press' name='update'/>
+				</form>";
+			}
+		}else{
+			echo "Sorry, there is not a project manager with that id";
+				echo "<form action='./editprojectmanagers.php' method='get'>
+				<input type='submit' value='To go back press' name='update'/>
+				</form>";
+			
+		}
+	}else{
+		echo "Sorry, the passwords did not match.";
+				echo "<form action='./editprojectmanagers.php' method='get'>
+				<input type='submit' value='To go back press' name='update'/>
+				</form>";
 
-<body>
-
-<p>Show here list of project managers</p>
-
-<h1>Enter the project manager's information:</h1>
-<form action=".php" method="post">
-<h2> Please enter your project manager's id <input type="number" name= "id" /> </h2>
-<h2> Please enter your project manager's new username: <input type="text" name= "username" /> </h2>
-<h2> Please enter your project manager's new password: <input type="password" name= "password" /> </h2>
-<h2> Please enter your project manager's new password again: <input type="password" name= "passwordagain" /> </h2>
-<input type="submit" value="Edit"/>
-<form>
-
-<form action=".php">
-<input type="submit" value="Cancel">
-</form>
+	}	
+}else if((($_POST['id']=="")||($_POST['password']==""))){
+	echo "Error: Don't leave box(es) empty";
+			echo "<form action='./editprojectmanagers.php' method='get'>
+				<input type='submit' value='To go back press' name='update'/>
+				</form>";
+}
 
 
 
-
-</body>
-
-
-
-
-</html>
+?>

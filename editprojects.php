@@ -137,9 +137,11 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		if($_SESSION['projectoperation'] == "add"){
 			
 		echo '
-		<h3>Enter some info, if you want a field to be NULL leave it empty: </h3>
-		<form action="updateproject.php" method="get"> 
-         <p>Id of the project you want to update: <input type="number" name="id" /></p>
+		Enter some info, if you want a field to be NULL leave it empty:
+				<hr>
+
+		<form action="addproject.php" method="post"> 
+         <p>Id of the project you want to add: <input type="number" name="id" /></p>
 		 <p> Name :<input type="text" name="name" /></p>
 		 <p> Start date: <input type="date" name="startdate" /></p>
 		 <p>Estimated Total Work Days: <input type="number" name="estimatedtotalworkdays" /></p>
@@ -153,10 +155,11 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		<?php
 		if($_SESSION['projectoperation'] == "update"){
 		echo '
-		<h3>Enter some info, if you don\'t want to change a field leave it empty, if you want a text field to be NULL, type NULL in it. :</h3>	
-
-		<form action="updateproject.php" method="get"> 
+		Enter some info, if you don\'t want to change a field leave it empty, if you want a text field to be NULL, type NULL in it and <b>id</b>, cannot be empty here. :
+		<hr>
+		<form action="updateproject.php" method="post"> 
          <p>Id of the project you want to update: <input type="number" name="id" /></p>
+		 <p> New Id : <input type="number" name="newid" /></p>
 		 <p> Name :<input type="text" name="name" /></p>
 		 <p> Start date: <input type="date" name="startdate" /></p>
 		 <p>Estimated Total Work Days: <input type="number" name="estimatedtotalworkdays" /></p>
@@ -170,10 +173,11 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		
 		<?php
 		if($_SESSION['projectoperation'] == "delete"){
-		echo '<h3>Here task-id is required. i.e cannot be empty.</h3>	
+		echo 'Here <b>id</b> is required. i.e cannot be empty.	
+		<hr>
 
-		<form action="deleteproject.php" method="get"> 
-         <p> <input type="number" name="id" /></p>
+		<form action="deleteproject.php" method="post"> 
+         <p>Id: <input type="number" name="id" /></p>
          <p><input type="submit" value="Click" /></p>
         </form>';
 		}

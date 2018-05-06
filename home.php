@@ -23,49 +23,23 @@ $conn = new mysqli("localhost", $_SESSION['username'], $_SESSION['password'],"my
 	}
 	
 if ($conn->connect_error) {
-	echo "<script type='text/javascript'>;
-			window.location.href = './index.php';
-			</script>";
+	echo "<p>Username or password was incorrect, to go back press this button</p><form action='index.php'><input type='submit' value='Click'/></form>";
 }else{
-	
-	$result = $conn->query("SELECT CURRENT_USER();");
-	
-	
-	
-	
-	$row = $result->fetch_assoc();
-	$currentuser = $row["CURRENT_USER()"];
-	
-	echo "Current User is : ". substr($currentuser,0,-10);
-	
-	$projectmanagersquery = $conn->query("SELECT username FROM projectmanager");
+	$adminquery = $conn->query("SELECT username FROM admin WHERE username ='".$_SESSION['username']."'");
+
+	$projectmanagersquery = $conn->query("SELECT id,username FROM projectmanager WHERE username='".$_SESSION['username']."'");
 	if ($projectmanagersquery->num_rows > 0) {
-		$projectmanagers = $projectmanagersquery->fetch_array(MYSQLI_NUM);
-		if(in_array($_SESSION['username'],$projectmanagers)){
-			
-			$id = $conn->query("SELECT id FROM projectmanager WHERE username='".$_SESSION['username']."'");
-			if($id){$array = $id->fetch_array();}
-			else{
-				echo $conn->error;
-			}
-			$_SESSION['projectmanagerid'] = $array[0];
-			projectmanager();
-		}else{
-			
-			echo "<br><p>You are not added to the database write now. Wait an admin to add to the database.</p>";
-			echo "<p>To go back press this button</p><form action='index.php'><input type='submit' value='Click'/></form>";
-		}
-	}
-	
-	
-	$adminquery = $conn->query("SELECT username FROM admin");
-	if($adminquery->num_rows > 0){
-		$admins = $adminquery->fetch_array(MYSQLI_NUM);
-		if(in_array($_SESSION['username'],$admins)){
-			admin();
-		}
+		$_SESSION['projectmanagerid'] = $projectmanagers['id'];
+		projectmanager();	
+		}	
+	else if($adminquery-> num_rows > 0 ) admin();
+	else{
+		echo "<br><p>Somehow, you are not added to the database write now. Wait an another admin to add you to the database.</p>";
+		echo "<p>To go back press this button</p><form action='index.php'><input type='submit' value='Click'/></form>";
 	}
 }
+	
+	
  
 ?>
 

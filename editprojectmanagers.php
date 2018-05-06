@@ -34,9 +34,6 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 	if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
 		}else{
-			// CREATE USER 'aas'@'localhost' IDENTIFIED VIA mysql_native_password USING '***';GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO 'aas'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
-			// DROP USER 'aas'@'localhost'
-			// SET PASSWORD FOR root@localhost = PASSWORD('your_root_password');
 			$resultArray = $conn->query("SELECT * FROM project");
 			if($resultArray){
 				if ($resultArray->num_rows > 0) {
@@ -139,9 +136,12 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		
 			if($_SESSION['projectManagerOperation'] == "add"){
 				echo '
-				<h3>Enter the username and password of the project manager.</h3>	
-
-				<form action="addprojectmanager.php" method="post"> 
+				Enter the username and password of the project manager. Don\'t leave, <b>username</b> and <b>password</b> empty.
+				Note that you cannot create a user with the same username of another user.
+				<hr>
+	
+				<form action="addprojectmanager.php" method="post">
+				 <p>Id:<input type="number" name="id"/></p>
 				 <p>User name: <input type="text" name="username" /></p>
 				 <p>Password: <input type="password" name="password" /></p>
 				 <p>Password again: <input type="password" name="passwordagain" /></p>
@@ -151,17 +151,21 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 			
 			if($_SESSION['projectManagerOperation'] == "update"){
 				echo '
-				<h3>Enter the id of the project manager that you want to update its password.</h3>	
+				Enter the id of the project manager that you want to update its password. Don\'t leave <b>id</b> and <b>password</b> empty.
+				<hr>
+
 
 				<form action="updateprojectmanager.php" method="post"> 
 				 <p> Id of the project manager: <input type="number" name="id" /></p>
 				 <p> New password: <input type="password" name="password" /></p>
+				 <p> New password again: <input type="password" name="passwordagain" /></p>
 				 <p><input type="submit" value="Click" /></p>
 				</form>';
 			}
 		
 			if($_SESSION['projectManagerOperation'] == "delete"){
-				echo '<h3>Enter the id of the project manager you want to delete.</h3>	
+				echo 'Enter the id of the project manager you want to delete. Don\'t leave <b>id</b> empty.
+				<hr>
 
 				<form action="deleteprojectmanager.php" method="post"> 
 				 <p> Id of the project manager: <input type="number" name="id" /></p>

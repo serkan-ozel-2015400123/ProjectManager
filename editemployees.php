@@ -53,8 +53,6 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 				echo $conn->error;
 			}
 			
-			?>
-<?php
 			$resultArray = $conn->query("SELECT * FROM project");
 			if($resultArray){
 				if ($resultArray->num_rows > 0) {
@@ -73,13 +71,32 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 				echo $conn->error;
 			}
 			
+			$resultArray = $conn->query("SELECT * FROM projectmanager");
 			
+			if($resultArray){
+				if ($resultArray->num_rows > 0) {
+					echo "<p>Project managers:</p>";
+					echo "<table><tr><th>ID</th><th>Username</th></tr>";
+				
+				while($row = $resultArray->fetch_assoc()) {
+					echo "<tr><td>" . $row["id"]. "</td><td>" . $row["username"]. "</td></tr>";
+				}
+					echo "</table><br>";
+				}else{
+					echo "0 results";
+				}
+				
+			}else{
+				echo $conn->error;
+			}
 
 		$conn->close();
 		}
 					
 		
 ?>
+	
+			
 <br>
 		<form action = "editemployees.php" method="get">
 		<input type="submit" value="Add an employee" name="add"/>
@@ -114,7 +131,9 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		
 		<?php
 		if($_SESSION[''] == "add"){
-		echo '<form action="addemployee.php" method="get"> 
+		echo '
+		Enter info please:
+		<form action="addemployee.php" method="get"> 
          <p> Id: <input type="number" name="id" /></p>
 		 <p> Name: <input type="text" name="name" /></p>
 		 <p> Project id: <input type="number" name="projectid" /></p>
@@ -125,8 +144,7 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		<?php
 		if($_SESSION[''] == "update"){
 		echo '
-		<h3></h3>	
-
+		Enter info please but <b>id</b> cannot be empty:
 		<form action="updateemployee.php" method="get"> 
           <p> Id: <input type="number" name="id" /></p>
 		 <p> Name: <input type="text" name="name" /></p>
@@ -138,7 +156,7 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		
 		<?php
 		if($_SESSION[''] == "delete"){
-		echo '<h3>Here task-id is required. i.e cannot be empty.</h3>	
+		echo 'Enter info please but <b>id</b> cannot be empty:
 
 		<form action="deleteemployee.php" method="get"> 
 		 <p> Id: <input type="number" name="id" /></p>
