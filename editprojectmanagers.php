@@ -37,6 +37,26 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 			// CREATE USER 'aas'@'localhost' IDENTIFIED VIA mysql_native_password USING '***';GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO 'aas'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 			// DROP USER 'aas'@'localhost'
 			// SET PASSWORD FOR root@localhost = PASSWORD('your_root_password');
+			$resultArray = $conn->query("SELECT * FROM project");
+			if($resultArray){
+				if ($resultArray->num_rows > 0) {
+					echo "<p>Projects: </p>";
+					echo "<table><tr><th>ID</th><th>Name</th><th>Start Date</th><th>Estimated Total Work Days</th><th>Area</th><th>Status</th><th>Project manager id</th></tr>";
+				
+				while($row = $resultArray->fetch_assoc()) {
+					echo "<tr><td>" . $row["id"]. "</td><td>" . $row["name"]. "</td><td>" . $row["start_date"]. "</td><td>" . $row["estimated_total_work_days"]. "</td><td>" . $row["area"]. "</td><td>" . $row["status"]. "</td><td>" . $row["project_manager_id"]. "</td></tr>";
+				}
+					echo "</table><br>";
+				}else{
+					echo "0 results";
+				}
+				
+			}else{
+				echo $conn->error;
+			}
+			
+		?>
+<?php		
 			$resultArray = $conn->query("SELECT * FROM projectmanager");
 			
 			if($resultArray){
@@ -46,6 +66,26 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 				
 				while($row = $resultArray->fetch_assoc()) {
 					echo "<tr><td>" . $row["id"]. "</td><td>" . $row["username"]. "</td></tr>";
+				}
+					echo "</table><br>";
+				}else{
+					echo "0 results";
+				}
+				
+			}else{
+				echo $conn->error;
+			}
+			?>
+<?php
+			
+			$resultArray = $conn->query("SELECT * FROM employee");
+			if($resultArray){
+				if ($resultArray->num_rows > 0) {
+					echo "<p>Employees:</p>";
+					echo "<table><tr><th>ID</th><th>Name</th><th>Project id</th></tr>";
+				
+				while($row = $resultArray->fetch_assoc()) {
+					echo "<tr><td>" . $row["id"]. "</td><td>" . $row["name"]. "</td><td>" . $row["project_id"]. "</td></tr>";
 				}
 					echo "</table><br>";
 				}else{
@@ -68,6 +108,7 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		<input type="submit" value="Add a project manager" name="add"/>
 		<input type="submit" value="Update a project manager's password " name="update"/>
 		<input type="submit" value="Delete a project manager" name="delete"/>
+		<input type="submit" value="Admin Home" name="admin">
 		<input type="submit" value="Log out" name="logout">
 		</form>
 		
@@ -84,6 +125,10 @@ $conn = new mysqli('localhost', $_SESSION['username'], $_SESSION['password'], 'm
 		}else if(isset($_GET['logout'])){
 			echo "<script type='text/javascript'>;
 			window.location.href = './index.php';
+			</script>";
+		}else if(isset($_GET['admin'])){
+			echo "<script type='text/javascript'>;
+			window.location.href = './admin.php';
 			</script>";
 		}
 		
